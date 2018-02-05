@@ -482,6 +482,7 @@ let
         license = licenses.agpl3Plus;
         description = "CKAN Software";
       };
+      patches = [ ./0001-configurable-js-compiler-dest-directory.patch ];
     };
 
     "click" = python.mkDerivation {
