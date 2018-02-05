@@ -1,0 +1,37 @@
+From d6802a35970c3dab9de31f30332fd9a9650e5971 Mon Sep 17 00:00:00 2001
+From: Richard Marko <srk@48.io>
+Date: Mon, 5 Feb 2018 10:11:03 +0100
+Subject: [PATCH] configurable js compiler dest directory
+
+---
+ ckan/lib/i18n.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/ckan/lib/i18n.py b/ckan/lib/i18n.py
+index 635b43d29..1e2cd6fe1 100644
+--- a/ckan/lib/i18n.py
++++ b/ckan/lib/i18n.py
+@@ -363,6 +363,11 @@ def build_js_translations():
+     ckan_i18n_dir = config.get(u'ckan.i18n_directory',
+                                os.path.join(_CKAN_DIR, u'i18n'))
+ 
++    if config.get('ckan.i18n_jsdest_directory'):
++        dest_path = config.get('ckan.i18n_jsdest_directory')
++    else:
++        dest_path = _JS_TRANSLATIONS_DIR
++
+     # Collect all language codes (an extension might add support for a
+     # language that isn't supported by CKAN core, yet).
+     langs = set()
+@@ -400,7 +405,7 @@ def build_js_translations():
+             continue
+ 
+         latest = max(os.path.getmtime(fn) for fn in po_files)
+-        dest_file = os.path.join(_JS_TRANSLATIONS_DIR, lang + u'.js')
++        dest_file = os.path.join(dest_path, lang + u'.js')
+         if os.path.isfile(dest_file) and os.path.getmtime(dest_file) > latest:
+             log.debug(u'JS translation for "{}" is up to date'.format(lang))
+         else:
+-- 
+2.16.1
+
